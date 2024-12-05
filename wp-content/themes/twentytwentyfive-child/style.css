@@ -1,0 +1,28 @@
+/*
+Theme Name:   Twenty twentyfive Child
+Theme URL:        http://example.com/twentytwentyfive-child/
+Description:  Twenty Seventeen Theme
+Author:           John Doe
+Author URL:   http://example.com
+Template:         twentytwentyfive
+Version:          1.0.0
+License:          GNU General Public License v2 or later
+License URL:  http://www.gnu.org/licenses/gpl-2.0.html
+Tags: light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
+Text Domain:  twentytwentyfive
+*/
+
+
+/* Ensure the CSS is targeting the correct elements */
+/* 1. Space Between Menu Items */
+#menu-item-35 {
+    margin-right: 10px !important; /* Forces the margin to be applied */
+}
+
+
+.nav li {
+    margin: 16px !important;
+  }
+
+
+ 

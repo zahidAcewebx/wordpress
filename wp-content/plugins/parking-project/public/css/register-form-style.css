@@ -1,0 +1,71 @@
+/* register-form-style.css */
+.my-register-form {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+.my-register-form p {
+    margin-bottom: 15px;
+}
+
+.my-register-form label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.my-register-form input[type="text"],
+.my-register-form input[type="email"],
+.my-register-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    border: 1px solid #ccc;
+}
+
+.my-register-form input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.my-register-form input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+}
+
+.success-message {
+    color: green;
+    font-size: 14px;
+}
+
+
+ul.user-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+ul.user-list li {
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    padding: 15px;
+    background-color: #f9f9f9;
+}
+ul.user-list li p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+ul.user-list li p strong {
+    color: #333;
+}
