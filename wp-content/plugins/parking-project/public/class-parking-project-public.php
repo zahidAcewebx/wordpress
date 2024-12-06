@@ -53,6 +53,8 @@ class Parking_Project_Public {
 		$this->version = $version;
 		add_shortcode( 'my_register_form', array( $this, 'my_register_form_func') );
 		add_shortcode( 'get_user_data', array( $this, 'get_user_data') );
+		add_shortcode( 'user_login', array( $this, 'user_login_func') );
+		
 
 	}
 
@@ -77,6 +79,7 @@ class Parking_Project_Public {
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/parking-project-public.css', array(), $this->version, 'all' );
 		wp_enqueue_style('register-form-style', plugin_dir_url(__FILE__) . 'css/register-form-style.css');
+	
 	}
 
 	/**
@@ -103,89 +106,6 @@ class Parking_Project_Public {
 	}
 	
 
-	// public function custom_register_form() {
-	// 	// Output custom fields or modify the default registration form here
-	// 	echo '<p><label for="custom_field">Custom Fieldghjhjh</label>';
-	// 	echo '<input type="text" name="custom_field" id="custom_field" class="input" value="" /></p>';
-	// }
-	// public function my_register_form_func() {
-	// 	// Output custom fields or modify the default registration form here
-	// 	$html  = '<style>
-	// 				.my-register-form { width: 100%; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; background-color: #f9f9f9; }
-	// 				.my-register-form p { margin-bottom: 15px; }
-	// 				.my-register-form label { font-weight: bold; display: block; margin-bottom: 5px; }
-	// 				.my-register-form input[type="text"], .my-register-form input[type="email"], .my-register-form input[type="password"] { width: 100%; padding: 10px; margin: 5px 0 15px 0; border: 1px solid #ccc; }
-	// 				.my-register-form input[type="submit"] { background-color: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; width: 100%; }
-	// 				.my-register-form input[type="submit"]:hover { background-color: #45a049; }
-	// 				.error-message { color: red; font-size: 14px; }
-	// 				.success-message { color: green; font-size: 14px; }
-	// 			  </style>';
-	
-	// 	$html .= '<form method="post" class="my-register-form">';
-	// 	$html .= '<p><label for="username">Username</label>';
-	// 	$html .= '<input type="text" name="username" id="username" class="input" required /></p>';
-	
-	// 	$html .= '<p><label for="first_name">First Name</label>';
-	// 	$html .= '<input type="text" name="first_name" id="first_name" class="input" required /></p>';
-	
-	// 	$html .= '<p><label for="last_name">Last Name</label>';
-	// 	$html .= '<input type="text" name="last_name" id="last_name" class="input" required /></p>';
-	
-	// 	$html .= '<p><label for="email">Email</label>';
-	// 	$html .= '<input type="email" name="email" id="email" class="input" required /></p>';
-	
-	// 	$html .= '<p><label for="password">Password</label>';
-	// 	$html .= '<input type="password" name="password" id="password" class="input" required /></p>';
-	
-	// 	$html .= '<p><label for="phone_number">Phone</label>';
-	// 	$html .= '<input type="text" name="phone_number" id="phone_number" class="input" /></p>';
-	
-	// 	$html .= '<p><label for="address">Address</label>';
-	// 	$html .= '<input type="text" name="address" id="address" class="input" /></p>';
-	
-	// 	$html .= '<p><input type="submit" name="register_submit" value="Register" /></p>';
-	
-	// 	$html .= '</form>';
-	
-	// 	if (isset($_POST['register_submit'])) {
-	
-	// 		$username  = sanitize_text_field($_POST['username']);
-	// 		$firstname = sanitize_text_field($_POST['first_name']);
-	// 		$lastname  = sanitize_text_field($_POST['last_name']);
-	// 		$email     = sanitize_email($_POST['email']);
-	// 		$password  = sanitize_text_field($_POST['password']);
-	// 		$phonenumber = sanitize_text_field($_POST['phone_number']);
-	// 		$address   = sanitize_text_field($_POST['address']);
-	
-	// 		if (username_exists($username)){
-	// 			$html .= '<p class="error-message">Username already exists.</p>';
-	// 		} elseif (email_exists($email)){
-	// 			$html .= '<p class="error-message">Email already exists.</p>';
-	// 		} else {
-	// 			$userdata = array(
-	// 				'user_login'  => $username,
-	// 				'first_name'  => $firstname,
-	// 				'last_name'   => $lastname,
-	// 				'user_email'  => $email,
-	// 				'user_pass'   => $password,
-	// 			);
-	
-	// 			$user_id = wp_insert_user($userdata);
-	// 			if (is_wp_error($user_id)) {
-	// 				$html .= '<p class="error-message">Error: ' . $user_id->get_error_message() . '</p>';
-	// 			} else {
-	// 				// User registration successful
-	// 				update_user_meta($user_id, 'phone_number', $phonenumber);
-	// 				update_user_meta($user_id, 'address', $address);
-	// 				$html .= '<p class="success-message">Registration successful! You can now log in.</p>';
-	// 			}
-	// 		}
-	// 	}
-	
-	// 	return $html;
-	// }
-
-
 
 
 	public function my_register_form_func() {
@@ -206,6 +126,7 @@ class Parking_Project_Public {
 			$password  = sanitize_text_field($_POST['password']);
 			$phonenumber = sanitize_text_field($_POST['phone_number']);
 			$address   = sanitize_text_field($_POST['address']);
+			$role   = $_POST['role'];
 	
 			if (username_exists($username)) {
 				$html .= '<p class="error-message">Username already exists.</p>';
@@ -218,6 +139,7 @@ class Parking_Project_Public {
 					'last_name'   => $lastname,
 					'user_email'  => $email,
 					'user_pass'   => $password,
+					'role'        =>$role,
 				);
 	
 				$user_id = wp_insert_user($userdata);
@@ -240,7 +162,7 @@ class Parking_Project_Public {
 	
 
 
-// public function get_user_data() {
+// public function get_user_data_by_id() {
 
 //     $user_id = get_current_user_id();
 
@@ -291,26 +213,9 @@ public function get_user_data() {
         return '<p>No users found.</p>'; // Handle case when no users are found
     }
 
-    // Start the output string
+    // // Start the output string
     $output = '<style>
-                ul.user-list {
-                    list-style-type: none;
-                    padding: 0;
-                    margin: 0;
-                }
-                ul.user-list li {
-                    border: 1px solid #ddd;
-                    margin: 10px 0;
-                    padding: 15px;
-                    background-color: #f9f9f9;
-                }
-                ul.user-list li p {
-                    margin: 5px 0;
-                    font-size: 14px;
-                }
-                ul.user-list li p strong {
-                    color: #333;
-                }
+                
                 </style>'; // Adding inline CSS for basic styling
 
     // Opening the list for user data
@@ -323,7 +228,9 @@ public function get_user_data() {
         $last_name  = $user_info->last_name;
         $email      = $user_info->user_email;
         $username   = $user_info->user_login;
-
+		// $password   = $user_info->user_pass;
+		
+		
         // Fetch user meta fields using the user ID
         $phone_number = get_user_meta($user_info->ID, 'phone_number', true);
         $address      = get_user_meta($user_info->ID, 'address', true);
@@ -335,6 +242,7 @@ public function get_user_data() {
         $output .= "<p><strong>First Name:</strong> $first_name</p>";
         $output .= "<p><strong>Last Name:</strong> $last_name</p>";
         $output .= "<p><strong>Email:</strong> $email</p>";
+		// $output .= "<p><strong>password:</strong> $password</p>";
 
         // Add phone number if available
         if (!empty($phone_number)) {
@@ -360,7 +268,82 @@ public function get_user_data() {
     return $output;
 }
 
+public function user_login_func() {
+    // Initialize the error message variable
+    $error_message = '';
+
+    // Check if the form is submitted
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_submit'])) {
+        // Sanitize the email and password input
+        $email = sanitize_email($_POST['email']);
+        $password = sanitize_text_field($_POST['password']);
+        
+        // Attempt user authentication
+        $user = wp_authenticate_email_password(null, $email, $password);
+
+        // If authentication is successful, redirect to home page
+        if (!is_wp_error($user)) {
+            // Redirect to a specified page
+            // wp_redirect(esc_url(home_url('/register')));
+			wp_safe_redirect('http://localhost/zahid-tutor/register');
+            exit; // Exit immediately to prevent further execution
+        } else {
+            // If authentication fails, capture the error message
+            $error_message = $user->get_error_message();
+        }
+    }
+
+    // Output buffering to include the login form template
+    ob_start();
+    include(plugin_dir_path(__FILE__) . 'partials/login-form-template.php');
+    $html = ob_get_clean(); // Get the buffered content without flushing
+
+    // Pass the error message and render the login form
+    return str_replace('{{error_message}}', esc_html($error_message), $html);
+}
+
+
+// public function user_login_func() {
+//     // Initialize the error message variable
+// 	   // If no redirect occurred, render the login form
+// 	   ob_start();  // Start output buffering
+
+// 	   // You can include the login form template here, and also display any error messages
+// 	   include(plugin_dir_path(__FILE__) . 'partials/login-form-template.php'); 
+	   
+// 	   // Get the buffered content and return it
+// 	   $html = ob_end_flush();
+//     $error_message = '';
+
+//     // Check if the form is submitted
+//     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login_submit'])) {
+//         // Sanitize the email and password input
+//         $email = sanitize_email($_POST['email']);
+//         $password = sanitize_text_field($_POST['password']);
+        
+//         // Attempt user authentication
+//         $user = wp_authenticate_email_password(null, $email, $password);
+
+       
+//         // If authentication is successful, redirect to home page
+//         if (!is_wp_error($user)) {
+			
+// 			wp_redirect('http://localhost/zahid-tutor/register'); // Directly redirect to the post
+//             exit();
+// // Exit immediately after redirect to ensure no further code is executed
+//         } else {
+//             // If authentication fails, display the error message
+//             $error_message = $user->get_error_message();
+//         }
+//     }
+
+ 
+
+//     return $html; 
+// }
+
 
 
 
 }
+
