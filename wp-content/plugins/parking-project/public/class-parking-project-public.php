@@ -54,6 +54,8 @@ class Parking_Project_Public {
 		add_shortcode( 'my_register_form', array( $this, 'my_register_form_func') );
 		add_shortcode( 'get_user_data', array( $this, 'get_user_data') );
 		add_shortcode( 'user_login', array( $this, 'user_login_func') );
+		add_shortcode( 'parking_form', array( $this, 'parking_form_func') );
+
 		
 
 	}
@@ -79,6 +81,8 @@ class Parking_Project_Public {
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/parking-project-public.css', array(), $this->version, 'all' );
 		wp_enqueue_style('register-form-style', plugin_dir_url(__FILE__) . 'css/register-form-style.css');
+				wp_enqueue_style('parking-form-style', plugin_dir_url(__FILE__) . 'css/parking-form-style.css');
+
 	
 	}
 
@@ -342,6 +346,57 @@ public function user_login_func() {
 //     return $html; 
 // }
 
+public function parking_form_func() {
+	if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['fullName'])) {
+        // Sanitize and validate input
+        $full_name = sanitize_text_field($_POST['fullName']);
+        $contact_number = sanitize_text_field($_POST['contactNumber']);
+        $email = sanitize_email($_POST['email']);
+        $car_registration = sanitize_text_field($_POST['carRegistration']);
+        $car_make_model = sanitize_text_field($_POST['carMakeModel']);
+        $parking_spot_type = sanitize_text_field($_POST['parkingSpotType']);
+        $parking_duration = sanitize_text_field($_POST['parkingDuration']);
+        $entry_time = sanitize_text_field($_POST['entryTime']);
+        $exit_time = sanitize_text_field($_POST['exitTime']);
+        $payment_method = sanitize_text_field($_POST['paymentMethod']);
+        $special_requests = sanitize_textarea_field($_POST['specialRequests']);
+        $agreement = isset($_POST['agreement']) ? 1 : 0; // Checkbox value
+        $parking_slot_number = sanitize_text_field($_POST['parkingSlotNumber']);
+
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'parking_bookings';
+
+        // Insert the form data into the database
+        $wpdb->insert(
+            $table_name,
+            array(
+                'full_name' => $full_name,
+                'contact_number' => $contact_number,
+                'email' => $email,
+                'car_registration' => $car_registration,
+                'car_make_model' => $car_make_model,
+                'parking_spot_type' => $parking_spot_type,
+                'parking_duration' => $parking_duration,
+                'entry_time' => $entry_time,
+                'exit_time' => $exit_time,
+                'payment_method' => $payment_method,
+                'special_requests' => $special_requests,
+                'agreement' => $agreement,
+                'parking_slot_number' => $parking_slot_number,
+            )
+        );
+
+        // Optionally, you can redirect or show a confirmation message
+        echo '<p>Thank you for your booking!</p>';
+    }
+
+    // Include the registration form template
+    include(plugin_dir_path(__FILE__) . 'partials/parking-form-template.php'); // Correct path
+
+    $html = ob_get_clean();
+
+    return $html;
+}
 
 
 
