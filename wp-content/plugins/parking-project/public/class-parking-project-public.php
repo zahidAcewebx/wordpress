@@ -55,6 +55,8 @@ class Parking_Project_Public {
 		add_shortcode( 'get_user_data', array( $this, 'get_user_data') );
 		add_shortcode( 'user_login', array( $this, 'user_login_func') );
 		add_shortcode( 'parking_form', array( $this, 'parking_form_func') );
+		add_shortcode( 'get_parking', array( $this, 'get_parking_func') );
+
 
 		
 
@@ -81,7 +83,9 @@ class Parking_Project_Public {
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/parking-project-public.css', array(), $this->version, 'all' );
 		wp_enqueue_style('register-form-style', plugin_dir_url(__FILE__) . 'css/register-form-style.css');
-				wp_enqueue_style('parking-form-style', plugin_dir_url(__FILE__) . 'css/parking-form-style.css');
+		wp_enqueue_style('parking-form-style', plugin_dir_url(__FILE__) . 'css/parking-form-style.css');
+		wp_enqueue_style('parking-card-style', plugin_dir_url(__FILE__) . 'css/parking-card-style.css');
+
 
 	
 	}
@@ -397,7 +401,23 @@ public function parking_form_func() {
 
     return $html;
 }
+public function get_parking_func() {
+    global $wpdb;
 
+    // Define the table name with the correct WordPress prefix
+    $table_name = $wpdb->prefix . 'parking_bookings';
+
+    // Query the database to get all parking bookings
+    $results = $wpdb->get_results("SELECT * FROM $table_name");
+
+    // Check if there are any results
+    if (!empty($results)) {
+        // Include the HTML template
+        include plugin_dir_path(__FILE__) . 'partials/parking-card-template.php';
+    } else {
+        return '<p>No parking bookings found.</p>';
+    }
+}
 
 
 }
