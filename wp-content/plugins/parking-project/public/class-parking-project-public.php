@@ -289,16 +289,12 @@ public function user_login_func() {
         // Attempt user authentication
         $user = wp_authenticate_email_password(null, $email, $password);
 
-        // If authentication is successful, redirect to home page
-        if (!is_wp_error($user)) {
-            // Redirect to a specified page
-            // wp_redirect(esc_url(home_url('/register')));
-			wp_safe_redirect('http://localhost/zahid-tutor/register');
-            exit; // Exit immediately to prevent further execution
-        } else {
-            // If authentication fails, capture the error message
-            $error_message = $user->get_error_message();
-        }
+            echo '<script type="text/javascript">
+        window.location.href = "' . home_url('/get-parking') . '";
+    </script>';
+
+    // End the function
+    return;
     }
 
     // Output buffering to include the login form template
@@ -389,7 +385,12 @@ public function parking_form_func() {
                 'parking_slot_number' => $parking_slot_number,
             )
         );
+            echo '<script type="text/javascript">
+        window.location.href = "' . home_url('/get-parking') . '";
+    </script>';
 
+    // End the function
+    return;
         // Optionally, you can redirect or show a confirmation message
         echo '<p>Thank you for your booking!</p>';
     }
