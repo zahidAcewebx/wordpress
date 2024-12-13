@@ -56,6 +56,8 @@ class Parking_Project_Public {
 		add_shortcode( 'user_login', array( $this, 'user_login_func') );
 		add_shortcode( 'parking_form', array( $this, 'parking_form_func') );
 		add_shortcode( 'get_parking', array( $this, 'get_parking_func') );
+		add_shortcode( 'handle_parking_booking', array( $this, 'handle_parking_booking_actions') );
+
 
 
 		
@@ -417,6 +419,38 @@ public function get_parking_func() {
         include plugin_dir_path(__FILE__) . 'partials/parking-card-template.php';
     } else {
         return '<p>No parking bookings found.</p>';
+    }
+}
+
+// Function to handle status updates
+function handle_parking_booking_actions() {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'parking_bookings';
+
+    if (isset($_GET['confirm'])) {
+        $booking_id = intval($_GET['confirm']);
+        $wpdb->update(
+            $table_name,
+            array('status' => 1), // Confirmed status (1)
+            array('id' => $booking_id),
+            array('%d'),
+            array('%d')
+        );
+        wp_redirect(admin_url('admin.php?page=parking_bookings'));
+        exit;
+    }
+
+    if (isset($_GET['cancel'])) {
+        $booking_id = intval($_GET['cancel']);
+        $wpdb->update(
+            $table_name,
+            array('status' => 0), // Cancelled status (0)
+            array('id' => $booking_id),
+            array('%d'),
+            array('%d')
+        );
+        wp_redirect(admin_url('admin.php?page=parking_bookings'));
+        exit;
     }
 }
 
